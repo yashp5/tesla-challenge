@@ -1,12 +1,21 @@
+from typing import Dict, List, Union
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 from db.data import BATTERIES, TRANSFORMER
-from typing import Dict, List, Union
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class Dimensions(BaseModel):
@@ -131,8 +140,8 @@ def calculate_energy_density(total_energy: float, area: float) -> float:
 
 @app.post("/site/build")
 def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
-    # Convert shapes to array of dicts
     shapes = [
+        {"type": "battery", "id": 4, "width": 10, "length": 10},
         {"type": "battery", "id": 2, "width": 30, "length": 10},
         {"type": "battery", "id": 1, "width": 40, "length": 10},
         {"type": "battery", "id": 1, "width": 40, "length": 10},
