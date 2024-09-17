@@ -57,7 +57,7 @@ const Site: React.FC = () => {
         dimensions: data.dimensions,
         energy: data.energy,
         energyUnit: data.energyUnit,
-        energyDensity: data.energyDensity,
+        energyDensity: Number(Number(data.energyDensity).toFixed(4)),
         energyDensityUnit: data.energyDensityUnit,
       };
       const energySiteLayout: EnergySiteLayout = {
