@@ -9,10 +9,12 @@ from typing import Dict, List, Union
 
 app = FastAPI()
 
+
 class Dimensions(BaseModel):
     length: int
     width: int
     unit: str
+
 
 class Battery(BaseModel):
     id: int
@@ -98,24 +100,35 @@ def get_data_transformer() -> Transformer:
 
 def get_battery_cost(battery_id: int) -> int:
     for battery in BATTERIES:
-        if battery['id'] == battery_id:
-            return battery['cost']
+        if battery["id"] == battery_id:
+            return battery["cost"]
     raise ValueError(f"Battery with id {battery_id} not found")
 
+
 def calculate_total_cost(selected_batteries: List[SelectedBattery]) -> int:
-    return sum(get_battery_cost(battery.battery_id) * battery.quantity for battery in selected_batteries)
+    return sum(
+        get_battery_cost(battery.battery_id) * battery.quantity
+        for battery in selected_batteries
+    )
+
 
 def get_battery_energy(battery_id: int) -> float:
     for battery in BATTERIES:
-        if battery['id'] == battery_id:
-            return battery['energy']
+        if battery["id"] == battery_id:
+            return battery["energy"]
     raise ValueError(f"Battery with id {battery_id} not found")
 
+
 def calculate_total_energy(selected_batteries: List[SelectedBattery]) -> float:
-    return sum(get_battery_energy(battery.battery_id) * battery.quantity for battery in selected_batteries)
+    return sum(
+        get_battery_energy(battery.battery_id) * battery.quantity
+        for battery in selected_batteries
+    )
+
 
 def calculate_energy_density(total_energy: float, area: float) -> float:
     return total_energy / area if area > 0 else 0
+
 
 @app.post("/site/build")
 def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
@@ -137,14 +150,14 @@ def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
     max_width = 100
 
     # Sort shapes by decreasing length
-    shapes.sort(key=lambda x: x['length'], reverse=True)
+    shapes.sort(key=lambda x: x["length"], reverse=True)
 
     shelves = []
-    current_shelf = {"height": shapes[0]['length'], "shapes": [], "width_used": 0}
+    current_shelf = {"height": shapes[0]["length"], "shapes": [], "width_used": 0}
     shelves.append(current_shelf)
 
     for shape in shapes:
-        width, length = shape['width'], shape['length']
+        width, length = shape["width"], shape["length"]
         if current_shelf["width_used"] + width <= max_width:
             # Place on current shelf
             current_shelf["shapes"].append((current_shelf["width_used"], shape))
@@ -159,7 +172,6 @@ def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
     # Calculate total grid height and maximum width used
     total_height = sum(shelf["height"] for shelf in shelves)
     max_width_used = max(shelf["width_used"] for shelf in shelves)
-  
 
     total_cost = calculate_total_cost(selectedBatteries)
     total_energy = calculate_total_energy(selectedBatteries)
@@ -180,5 +192,6 @@ def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
 
 if __name__ == "__main__":
     import matplotlib
-    matplotlib.use('Agg')  # Use the 'Agg' backend which doesn't require a GUI
+
+    matplotlib.use("Agg")  # Use the 'Agg' backend which doesn't require a GUI
     uvicorn.run(app, host="0.0.0.0", port=9000)
