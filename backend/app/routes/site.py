@@ -4,6 +4,7 @@ from db import BATTERIES, TRANSFORMER
 
 router = APIRouter()
 
+
 def getBatteryCost(batteryId: int) -> int:
     for battery in BATTERIES:
         if battery["id"] == batteryId:
@@ -23,6 +24,7 @@ def getBatteryEnergy(batteryId: int) -> float:
         if battery["id"] == batteryId:
             return battery["energy"]
     raise ValueError(f"Battery with id {batteryId} not found")
+
 
 def calculateTotalEnergy(selectedBatteries: list[SelectedBattery]) -> float:
     return sum(

@@ -4,6 +4,7 @@ from db import BATTERIES, TRANSFORMER
 
 router = APIRouter()
 
+
 @router.get("/batteries")
 def getDataBatteries() -> list[Battery]:
     return [Battery(**battery) for battery in BATTERIES]
