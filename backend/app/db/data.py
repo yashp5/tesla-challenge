@@ -2,7 +2,7 @@ BATTERIES = [
     {
         "id": 1,
         "name": "Megapack 2XL",
-        "dimensions": {"length": 40, "width": 10, "unit": "ft"},
+        "dimensions": {"length": 10, "width": 40, "unit": "ft"},
         "energy": 4,
         "energy_unit": "MWh",
         "cost": 120000,
@@ -14,7 +14,7 @@ BATTERIES = [
     {
         "id": 2,
         "name": "Megapack 2",
-        "dimensions": {"length": 30, "width": 10, "unit": "ft"},
+        "dimensions": {"length": 10, "width": 30, "unit": "ft"},
         "energy": 3,
         "energy_unit": "MWh",
         "cost": 80000,
@@ -26,7 +26,7 @@ BATTERIES = [
     {
         "id": 3,
         "name": "Megapack",
-        "dimensions": {"length": 30, "width": 10, "unit": "ft"},
+        "dimensions": {"length": 10, "width": 30, "unit": "ft"},
         "energy": 2,
         "energy_unit": "MWh",
         "cost": 50000,
@@ -52,7 +52,7 @@ BATTERIES = [
 TRANSFORMER = {
     "id": 1,
     "name": "Transformer",
-    "dimensions": {"length": 40, "width": 10, "unit": "ft"},
+    "dimensions": {"length": 10, "width": 10, "unit": "ft"},
     "energy": 4,
     "energy_unit": "MWh",
     "cost": 120000,
