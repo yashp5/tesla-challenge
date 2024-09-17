@@ -191,7 +191,4 @@ def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
 
 
 if __name__ == "__main__":
-    import matplotlib
-
-    matplotlib.use("Agg")  # Use the 'Agg' backend which doesn't require a GUI
     uvicorn.run(app, host="0.0.0.0", port=9000)
