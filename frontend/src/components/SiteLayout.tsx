@@ -1,102 +1,11 @@
 import React from 'react';
+import { EnergySiteLayout } from '../types/types';
 
-const energySiteLayout = {
-  maxWidth: 100,
-  dimensions: {
-    length: 40,
-    width: 100,
-    unit: 'ft',
-  },
-  layout: [
-    [
-      {
-        type: 'battery',
-        id: 4,
-        name: 'Powerpack',
-        width: 10,
-        length: 10,
-      },
-      {
-        type: 'battery',
-        id: 2,
-        name: 'Megapack 2',
-        width: 30,
-        length: 10,
-      },
-      {
-        type: 'battery',
-        id: 1,
-        name: 'Megapack 2XL',
-        width: 40,
-        length: 10,
-      },
-    ],
-    [
-      {
-        type: 'battery',
-        id: 1,
-        name: 'Megapack 2XL',
-        width: 40,
-        length: 10,
-      },
-      {
-        type: 'battery',
-        id: 1,
-        name: 'Megapack 2XL',
-        width: 40,
-        length: 10,
-      },
-    ],
-    [
-      {
-        type: 'battery',
-        id: 1,
-        name: 'Megapack 2XL',
-        width: 40,
-        length: 10,
-      },
-      {
-        type: 'battery',
-        id: 2,
-        name: 'Megapack 2',
-        width: 30,
-        length: 10,
-      },
-      {
-        type: 'battery',
-        id: 3,
-        name: 'Megapack',
-        width: 30,
-        length: 10,
-      },
-    ],
-    [
-      {
-        type: 'battery',
-        id: 3,
-        name: 'Megapack',
-        width: 30,
-        length: 10,
-      },
-      {
-        type: 'transformer',
-        name: 'Transformer',
-        id: 1,
-        width: 10,
-        length: 10,
-      },
-      {
-        type: 'transformer',
-        id: 1,
-        name: 'Transformer',
-        width: 10,
-        length: 10,
-      },
-    ],
-  ],
-};
+interface SiteLayoutProps {
+  energySiteLayout: EnergySiteLayout;
+}
 
-const SiteLayout: React.FC = () => {
+const SiteLayout: React.FC<SiteLayoutProps> = ({ energySiteLayout }) => {
   return (
     <div>
       <div className="bg-white shadow-md rounded-lg p-6 text-left">

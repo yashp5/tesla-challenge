@@ -1,35 +1,26 @@
 import React from 'react';
+import { EnergySiteDetails } from '../types/types';
 
-const energySiteDetails = {
-  cost: 600000,
-  costCurrency: 'USD',
-  dimensions: {
-    length: 40,
-    width: 100,
-    unit: 'ft',
-  },
-  energy: 22,
-  energyUnit: 'MWh',
-  energyDensity: 0.0055,
-  energyDensityUnit: 'MWh/sqft',
-};
+interface SiteDetailProps {
+  siteDetails: EnergySiteDetails;
+}
 
-const SiteDetail: React.FC = () => {
+const SiteDetail: React.FC<SiteDetailProps> = ({ siteDetails }) => {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6 text-left">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Site Details</h2>
       <p className="text-lg text-gray-600">
-        Cost: {energySiteDetails.cost} {energySiteDetails.costCurrency}
+        Cost: {siteDetails.cost} {siteDetails.costCurrency}
       </p>
       <p className="text-lg text-gray-600">
-        Land Dimensions: {energySiteDetails.dimensions.width} {energySiteDetails.dimensions.unit} x{' '}
-        {energySiteDetails.dimensions.length} {energySiteDetails.dimensions.unit}
+        Land Dimensions: {siteDetails.dimensions.width} {siteDetails.dimensions.unit} x{' '}
+        {siteDetails.dimensions.length} {siteDetails.dimensions.unit}
       </p>
       <p className="text-lg text-gray-600">
-        Total Energy: {energySiteDetails.energy} {energySiteDetails.energyUnit}
+        Total Energy: {siteDetails.energy} {siteDetails.energyUnit}
       </p>
       <p className="text-lg text-gray-600">
-        Energy Density: {energySiteDetails.energyDensity} {energySiteDetails.energyDensityUnit}
+        Energy Density: {siteDetails.energyDensity} {siteDetails.energyDensityUnit}
       </p>
     </div>
   );
