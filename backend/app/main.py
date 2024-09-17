@@ -140,19 +140,52 @@ def calculate_energy_density(total_energy: float, area: float) -> float:
 
 @app.post("/site/build")
 def post_site_build(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
-    shapes = [
-        {"type": "battery", "id": 4, "width": 10, "length": 10},
-        {"type": "battery", "id": 2, "width": 30, "length": 10},
-        {"type": "battery", "id": 1, "width": 40, "length": 10},
-        {"type": "battery", "id": 1, "width": 40, "length": 10},
-        {"type": "battery", "id": 1, "width": 40, "length": 10},
-        {"type": "battery", "id": 1, "width": 40, "length": 10},
-        {"type": "battery", "id": 2, "width": 30, "length": 10},
-        {"type": "battery", "id": 3, "width": 30, "length": 10},
-        {"type": "battery", "id": 3, "width": 30, "length": 10},
-        {"type": "transformer", "id": 1, "width": 10, "length": 10},
-        {"type": "transformer", "id": 1, "width": 10, "length": 10},
-    ]
+    shapes = []
+    battery_count = 0
+    transformer_count = 0
+
+    for selected_battery in selectedBatteries:
+        battery = next(
+            (b for b in BATTERIES if b["id"] == selected_battery.battery_id), None
+        )
+        if battery:
+            for _ in range(selected_battery.quantity):
+                shapes.append(
+                    {
+                        "type": "battery",
+                        "id": battery["id"],
+                        "width": battery["dimensions"]["width"],
+                        "length": battery["dimensions"]["length"],
+                        "name": battery["name"],
+                    }
+                )
+                battery_count += 1
+
+                # Add a transformer for every four batteries
+                if battery_count % 4 == 0:
+                    shapes.append(
+                        {
+                            "type": "transformer",
+                            "id": TRANSFORMER["id"],
+                            "width": TRANSFORMER["dimensions"]["width"],
+                            "length": TRANSFORMER["dimensions"]["length"],
+                            "name": TRANSFORMER["name"],
+                        }
+                    )
+                    transformer_count += 1
+
+    # Add one final transformer if there are remaining batteries
+    if battery_count % 4 != 0:
+        shapes.append(
+            {
+                "type": "transformer",
+                "id": TRANSFORMER["id"],
+                "width": TRANSFORMER["dimensions"]["width"],
+                "length": TRANSFORMER["dimensions"]["length"],
+                "name": TRANSFORMER["name"],
+            }
+        )
+        transformer_count += 1
 
     # Maximum grid width
     max_width = 100
