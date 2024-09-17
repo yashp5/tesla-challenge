@@ -5,50 +5,50 @@ from db import BATTERIES, TRANSFORMER
 router = APIRouter()
 
 
-def getBatteryCost(batteryId: int) -> int:
+def get_battery_cost(battery_id: int) -> int:
     for battery in BATTERIES:
-        if battery["id"] == batteryId:
+        if battery["id"] == battery_id:
             return battery["cost"]
-    raise ValueError(f"Battery with id {batteryId} not found")
+    raise ValueError(f"Battery with id {battery_id} not found")
 
 
-def calculateTotalCost(selectedBatteries: list[SelectedBattery]) -> int:
+def calculate_total_cost(selected_batteries: list[SelectedBattery]) -> int:
     return sum(
-        getBatteryCost(battery.batteryId) * battery.quantity
-        for battery in selectedBatteries
+        get_battery_cost(battery.batteryId) * battery.quantity
+        for battery in selected_batteries
     )
 
 
-def getBatteryEnergy(batteryId: int) -> float:
+def get_battery_energy(battery_id: int) -> float:
     for battery in BATTERIES:
-        if battery["id"] == batteryId:
+        if battery["id"] == battery_id:
             return battery["energy"]
-    raise ValueError(f"Battery with id {batteryId} not found")
+    raise ValueError(f"Battery with id {battery_id} not found")
 
 
-def calculateTotalEnergy(selectedBatteries: list[SelectedBattery]) -> float:
+def calculate_total_energy(selected_batteries: list[SelectedBattery]) -> float:
     return sum(
-        getBatteryEnergy(battery.batteryId) * battery.quantity
-        for battery in selectedBatteries
+        get_battery_energy(battery.batteryId) * battery.quantity
+        for battery in selected_batteries
     )
 
 
-def calculateEnergyDensity(totalEnergy: float, area: float) -> float:
-    return totalEnergy / area if area > 0 else 0
+def calculate_energy_density(total_energy: float, area: float) -> float:
+    return total_energy / area if area > 0 else 0
 
 
 @router.post("/build")
-def postSiteBuild(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
+def post_site_build(selected_batteries: list[SelectedBattery]) -> SiteDetails:
     shapes = []
-    batteryCount = 0
-    transformerCount = 0
+    battery_count = 0
+    transformer_count = 0
 
-    for selectedBattery in selectedBatteries:
+    for selected_battery in selected_batteries:
         battery = next(
-            (b for b in BATTERIES if b["id"] == selectedBattery.batteryId), None
+            (b for b in BATTERIES if b["id"] == selected_battery.batteryId), None
         )
         if battery:
-            for _ in range(selectedBattery.quantity):
+            for _ in range(selected_battery.quantity):
                 shapes.append(
                     {
                         "type": "battery",
@@ -58,10 +58,9 @@ def postSiteBuild(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
                         "name": battery["name"],
                     }
                 )
-                batteryCount += 1
+                battery_count += 1
 
-                # Add a transformer for every four batteries
-                if batteryCount % 4 == 0:
+                if battery_count % 4 == 0:
                     shapes.append(
                         {
                             "type": "transformer",
@@ -71,10 +70,9 @@ def postSiteBuild(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
                             "name": TRANSFORMER["name"],
                         }
                     )
-                    transformerCount += 1
+                    transformer_count += 1
 
-    # Add one final transformer if there are remaining batteries
-    if batteryCount % 4 != 0:
+    if battery_count % 4 != 0:
         shapes.append(
             {
                 "type": "transformer",
@@ -84,47 +82,42 @@ def postSiteBuild(selectedBatteries: list[SelectedBattery]) -> SiteDetails:
                 "name": TRANSFORMER["name"],
             }
         )
-        transformerCount += 1
+        transformer_count += 1
 
-    # Maximum grid width
-    maxWidth = 100
+    max_width = 100
 
-    # Sort shapes by decreasing length
     shapes.sort(key=lambda x: x["length"], reverse=True)
 
     shelves = []
-    currentShelf = {"height": shapes[0]["length"], "shapes": [], "widthUsed": 0}
-    shelves.append(currentShelf)
+    current_shelf = {"height": shapes[0]["length"], "shapes": [], "width_used": 0}
+    shelves.append(current_shelf)
 
     for shape in shapes:
         width, length = shape["width"], shape["length"]
-        if currentShelf["widthUsed"] + width <= maxWidth:
-            # Place on current shelf
-            currentShelf["shapes"].append((currentShelf["widthUsed"], shape))
-            currentShelf["widthUsed"] += width
+        if current_shelf["width_used"] + width <= max_width:
+            current_shelf["shapes"].append((current_shelf["width_used"], shape))
+            current_shelf["width_used"] += width
         else:
-            # Start new shelf
-            currentShelf = {"height": length, "shapes": [], "widthUsed": 0}
-            shelves.append(currentShelf)
-            currentShelf["shapes"].append((0, shape))
-            currentShelf["widthUsed"] += width
+            current_shelf = {"height": length, "shapes": [], "width_used": 0}
+            shelves.append(current_shelf)
+            current_shelf["shapes"].append((0, shape))
+            current_shelf["width_used"] += width
 
-    # Calculate total grid height and maximum width used
-    totalHeight = sum(shelf["height"] for shelf in shelves)
-    maxWidthUsed = max(shelf["widthUsed"] for shelf in shelves)
+    total_height = sum(shelf["height"] for shelf in shelves)
+    max_width_used = max(shelf["width_used"] for shelf in shelves)
 
-    totalCost = calculateTotalCost(selectedBatteries)
-    totalEnergy = calculateTotalEnergy(selectedBatteries)
-    area = totalHeight * maxWidthUsed
-    energyDensity = calculateEnergyDensity(totalEnergy, area)
+    total_cost = calculate_total_cost(selected_batteries)
+    total_energy = calculate_total_energy(selected_batteries)
+    area = total_height * max_width_used
+    energy_density = calculate_energy_density(total_energy, area)
 
     return SiteDetails(
-        cost=totalCost,
+        cost=total_cost,
         costCurrency="USD",
-        dimensions=Dimensions(length=totalHeight, width=maxWidthUsed, unit="ft"),
-        energy=totalEnergy,
+        dimensions=Dimensions(length=total_height, width=max_width_used, unit="ft"),
+        energy=total_energy,
         energyUnit="MWh",
-        energyDensity=energyDensity,
+        energyDensity=energy_density,
         energyDensityUnit="MWh/sqft",
         layout=[[shape for _, shape in shelf["shapes"]] for shelf in shelves],
     )
