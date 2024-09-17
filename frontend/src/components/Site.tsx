@@ -31,7 +31,7 @@ const Site: React.FC = () => {
     const form = e.target as HTMLFormElement;
     const batterySelections: BatterySelection[] = batteries
       .map((battery) => ({
-        battery_id: battery.id,
+        batteryId: battery.id,
         quantity: parseInt(form[`battery-${battery.id}`].value, 10) || 0,
       }))
       .filter((selection) => selection.quantity > 0);
@@ -61,7 +61,7 @@ const Site: React.FC = () => {
         energyDensityUnit: data.energyDensityUnit,
       };
       const energySiteLayout: EnergySiteLayout = {
-        maxWidth: data.max_width,
+        maxWidth: data.maxWidth,
         dimensions: data.dimensions,
         layout: data.layout,
       };
