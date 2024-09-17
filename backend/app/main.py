@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import uvicorn
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
