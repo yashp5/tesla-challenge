@@ -16,6 +16,7 @@ const Site: React.FC = () => {
   const [siteDetails, setSiteDetails] = useState<EnergySiteDetails | null>(null);
   const [siteLayout, setSiteLayout] = useState<EnergySiteLayout | null>(null);
   const [transformer, setTransformer] = useState<Transformer | null>(null);
+  const [showTooltips, setShowTooltips] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +46,8 @@ const Site: React.FC = () => {
 
   const handleBuildLayout = async (e: FormEvent) => {
     e.preventDefault();
+    setShowTooltips(false);
+
     const form = e.target as HTMLFormElement;
     const batterySelections: BatterySelection[] = batteries
       .map((battery) => ({
@@ -123,18 +126,20 @@ const Site: React.FC = () => {
           {batteries.map((battery) => (
             <div key={battery.id} className="mb-4 grid grid-cols-2 gap-4 items-center">
               <label
-                data-tooltip-id={`tooltip-battery-${battery.id}`}
+                data-tooltip-id={showTooltips ? `tooltip-battery-${battery.id}` : undefined}
                 className="text-lg font-semibold cursor-pointer hover:underline"
                 style={{ color: battery.color }}>
                 {battery.name}
               </label>
-              <Tooltip
-                id={`tooltip-battery-${battery.id}`}
-                place="top"
-                className="max-w-xs"
-                style={{ backgroundColor: 'transparent', color: 'inherit' }}>
-                {getBatteryTooltipContent(battery)}
-              </Tooltip>
+              {showTooltips && (
+                <Tooltip
+                  id={`tooltip-battery-${battery.id}`}
+                  place="top"
+                  className="max-w-xs"
+                  style={{ backgroundColor: 'transparent', color: 'inherit' }}>
+                  {getBatteryTooltipContent(battery)}
+                </Tooltip>
+              )}
               <input
                 type="number"
                 min="0"
