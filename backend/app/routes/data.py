@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from models import Battery, Transformer, Dimensions
-from db import BATTERIES, TRANSFORMER
+from app.models import Battery, Transformer, Dimensions
+from app.db import BATTERIES, TRANSFORMER
 
 router = APIRouter()
 
