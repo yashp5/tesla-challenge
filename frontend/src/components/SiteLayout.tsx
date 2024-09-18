@@ -13,7 +13,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ energySiteLayout, batteries, tr
     if (item.type === 'battery') {
       return `B${item.id}`;
     } else if (item.type === 'transformer') {
-      return `T${item.id}`;
+      return `T`;
     }
     return '';
   };
