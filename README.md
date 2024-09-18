@@ -17,8 +17,8 @@ This project is a site layout webpage that allows users to mockup the build of m
 ## Project Structure
 
 The project is divided into two main parts:
-- `backend`: Python-based backend service
-- `frontend`: React-based frontend application
+- `backend`: Python-based backend service, running on `localhost:9000`
+- `frontend`: React-based frontend application, running on `localhost:8000`
 
 ## Getting Started
 
