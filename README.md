@@ -2,16 +2,26 @@
 
 This project is a site layout webpage that allows users to mockup the build of materials and site layout for an Industrial Energy Battery site.
 
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Docker](#docker)
+  - [Manual Setup](#manual-setup)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Future Improvements](#future-improvements)
+
 ## Project Structure
 
 The project is divided into two main parts:
-
 - `backend`: Python-based backend service
 - `frontend`: React-based frontend application
 
-## Running the Application
+## Getting Started
 
-## Docker
+### Docker
 
 The project includes Dockerfiles for both backend and frontend, as well as a `docker-compose.yml` file for easy deployment.
 
@@ -19,52 +29,55 @@ To run the entire application using Docker:
 1. Navigate to the root directory
 2. Run `docker-compose up --build`
 
-### Backend
+### Manual Setup
 
-To run the backend:
+#### Backend
 
 1. Navigate to the `backend` directory
-2. Create a virtual environment:
-   ```
+2. Create and activate a virtual environment:
+   ```bash
    python -m venv venv
+   source venv/bin/activate  # On macOS/Linux
+   # or
+   venv\Scripts\activate  # On Windows
    ```
-3. Activate the virtual environment:
-   - On Windows:
-     ```
-     venv\Scripts\activate
-     ```
-   - On macOS and Linux:
-     ```
-     source venv/bin/activate
-     ```
-4. Install dependencies: `pip install -r requirements.txt`
-5. Run the application: `python main.py`
+3. Install dependencies: `pip install -r requirements.txt`
 
-### Frontend
-
-To run the frontend:
+#### Frontend
 
 1. Navigate to the `frontend` directory
 2. Install dependencies: `npm install`
-3. Start the development server: `npm run start:frontend`
 
-### Running the entire application
+## Running the Application
 
-1. Install dependencies for both frontend and backend with the above instructions
-2. Navigate to the `frontend` directory
-3. Start the development server: `npm run start`
+### Docker
+Follow the Docker instructions in the [Getting Started](#docker) section.
 
+### Manual
+1. Start both the backend and frontend:
+   ```bash
+   cd frontend
+   npm run start
+   ```
 
-### Improvements:
-- Frontend:
-  - Layout does not scale with large number of objects
-  - Sometimes same size objects are scaled inconsistently
-  - Use of images to make it more visually appealing
-- Backend:
-  - Handle rotation of objects
-  - Research and implement a better strategy for object placement
-  - Not taking into account the space between objects
-  - Improve test coverage
+## Testing
+
+To run the backend tests:
+1. Navigate to the `backend` directory
+2. Run `pytest`
+
+## Future Improvements
+
+### Frontend
+- Improve layout scaling for a large number of objects
+- Ensure consistent scaling of same-size objects
+- Enhance visual appeal with images
+
+### Backend
+- Implement object rotation
+- Research and implement better object placement strategies
+- Account for space between objects
+- Improve test coverage
 
 
 
