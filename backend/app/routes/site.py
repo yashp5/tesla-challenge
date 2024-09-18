@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from models import SelectedBattery, SiteDetails, Dimensions
 from db import BATTERIES, TRANSFORMER
+from core.layout import LayoutBuilder, FirstFitDecreasingHeightLayoutStrategy
 
 router = APIRouter()
 
@@ -85,39 +86,20 @@ def post_site_build(selected_batteries: list[SelectedBattery]) -> SiteDetails:
         transformer_count += 1
 
     max_width = 100
-
-    shapes.sort(key=lambda x: x["length"], reverse=True)
-
-    shelves = []
-    current_shelf = {"height": shapes[0]["length"], "shapes": [], "width_used": 0}
-    shelves.append(current_shelf)
-
-    for shape in shapes:
-        width, length = shape["width"], shape["length"]
-        if current_shelf["width_used"] + width <= max_width:
-            current_shelf["shapes"].append((current_shelf["width_used"], shape))
-            current_shelf["width_used"] += width
-        else:
-            current_shelf = {"height": length, "shapes": [], "width_used": 0}
-            shelves.append(current_shelf)
-            current_shelf["shapes"].append((0, shape))
-            current_shelf["width_used"] += width
-
-    total_height = sum(shelf["height"] for shelf in shelves)
-    max_width_used = max(shelf["width_used"] for shelf in shelves)
+    layout_builder = LayoutBuilder(FirstFitDecreasingHeightLayoutStrategy())
+    layout = layout_builder.build(shapes, max_width)
 
     total_cost = calculate_total_cost(selected_batteries)
     total_energy = calculate_total_energy(selected_batteries)
-    area = total_height * max_width_used
-    energy_density = calculate_energy_density(total_energy, area)
+    energy_density = calculate_energy_density(total_energy, layout.area)
 
     return SiteDetails(
         cost=total_cost,
         costCurrency="USD",
-        dimensions=Dimensions(length=total_height, width=max_width_used, unit="ft"),
+        dimensions=Dimensions(length=layout.height, width=layout.width, unit="ft"),
         energy=total_energy,
         energyUnit="MWh",
         energyDensity=energy_density,
         energyDensityUnit="MWh/sqft",
-        layout=[[shape for _, shape in shelf["shapes"]] for shelf in shelves],
+        layout=[[shape for _, shape in shelf["shapes"]] for shelf in layout.layout],
     )

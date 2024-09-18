@@ -7,18 +7,21 @@ router = APIRouter()
 
 @router.get("/batteries")
 def get_data_batteries() -> list[Battery]:
-    return [Battery(
-        id=battery["id"],
-        name=battery["name"],
-        dimensions=Dimensions(**battery["dimensions"]),
-        energy=battery["energy"],
-        energyUnit=battery["energy_unit"],
-        cost=battery["cost"],
-        costCurrency=battery["cost_currency"],
-        releaseDate=battery["release_date"],
-        weight=battery["weight"],
-        weightUnit=battery["weight_unit"]
-    ) for battery in BATTERIES]
+    return [
+        Battery(
+            id=battery["id"],
+            name=battery["name"],
+            dimensions=Dimensions(**battery["dimensions"]),
+            energy=battery["energy"],
+            energyUnit=battery["energy_unit"],
+            cost=battery["cost"],
+            costCurrency=battery["cost_currency"],
+            releaseDate=battery["release_date"],
+            weight=battery["weight"],
+            weightUnit=battery["weight_unit"],
+        )
+        for battery in BATTERIES
+    ]
 
 
 @router.get("/transformer")
@@ -33,5 +36,5 @@ def get_data_transformer() -> Transformer:
         costCurrency=TRANSFORMER["cost_currency"],
         releaseDate=TRANSFORMER["release_date"],
         weight=TRANSFORMER["weight"],
-        weightUnit=TRANSFORMER["weight_unit"]
+        weightUnit=TRANSFORMER["weight_unit"],
     )
