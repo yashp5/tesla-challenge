@@ -17,7 +17,7 @@ def get_data_batteries() -> list[Battery]:
             cost=battery["cost"],
             costCurrency=battery["cost_currency"],
             releaseDate=battery["release_date"],
-            color=battery["color"], 
+            color=battery["color"],
         )
         for battery in BATTERIES
     ]
@@ -34,5 +34,5 @@ def get_data_transformer() -> Transformer:
         cost=TRANSFORMER["cost"],
         costCurrency=TRANSFORMER["cost_currency"],
         releaseDate=TRANSFORMER["release_date"],
-        color=TRANSFORMER["color"], 
+        color=TRANSFORMER["color"],
     )

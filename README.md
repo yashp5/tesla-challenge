@@ -55,3 +55,16 @@ To run the frontend:
 3. Start the development server: `npm run start`
 
 
+### Improvements:
+- Frontend:
+  - Layout does not scale with large number of objects
+  - Sometimes same size objects are scaled inconsistently
+  - Use of images to make it more visually appealing
+- Backend:
+  - Handle rotation of objects
+  - Research and implement a better strategy for object placement
+  - Not taking into account the space between objects
+  - Improve test coverage
+
+
+

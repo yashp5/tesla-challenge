@@ -19,6 +19,7 @@ class Battery(BaseModel):
     releaseDate: str
     color: str
 
+
 class Transformer(BaseModel):
     id: int
     name: str
@@ -29,6 +30,7 @@ class Transformer(BaseModel):
     costCurrency: str
     releaseDate: str
     color: str
+
 
 class SelectedBattery(BaseModel):
     batteryId: int
