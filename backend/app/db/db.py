@@ -8,8 +8,7 @@ BATTERIES = [
         "cost": 120000,
         "cost_currency": "USD",
         "release_date": "2022-01-01",
-        "weight": 40000,
-        "weight_unit": "kg",
+        "color": "#8B4513",  # Saddle Brown
     },
     {
         "id": 2,
@@ -20,8 +19,7 @@ BATTERIES = [
         "cost": 80000,
         "cost_currency": "USD",
         "release_date": "2021-03-15",
-        "weight": 35000,
-        "weight_unit": "kg",
+        "color": "#50C878",  # Emerald Green
     },
     {
         "id": 3,
@@ -32,8 +30,7 @@ BATTERIES = [
         "cost": 50000,
         "cost_currency": "USD",
         "release_date": "2005-06-30",
-        "weight": 30000,
-        "weight_unit": "kg",
+        "color": "#F39C12",  # Soft Orange
     },
     {
         "id": 4,
@@ -44,8 +41,7 @@ BATTERIES = [
         "cost": 20000,
         "cost_currency": "USD",
         "release_date": "2000-12-01",
-        "weight": 15000,
-        "weight_unit": "kg",
+        "color": "#9B59B6",  # Soft Purple
     },
 ]
 
@@ -53,11 +49,10 @@ TRANSFORMER = {
     "id": 1,
     "name": "Transformer",
     "dimensions": {"length": 10, "width": 10, "unit": "ft"},
-    "energy": 4,
+    "energy": -0.25,
     "energy_unit": "MWh",
-    "cost": 120000,
+    "cost": 10000,
     "cost_currency": "USD",
-    "release_date": "2022-05-20",
-    "weight": 45000,
-    "weight_unit": "kg",
+    "release_date": "-",
+    "color": "#E74C3C",  # Soft Red
 }

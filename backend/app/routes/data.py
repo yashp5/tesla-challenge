@@ -17,8 +17,7 @@ def get_data_batteries() -> list[Battery]:
             cost=battery["cost"],
             costCurrency=battery["cost_currency"],
             releaseDate=battery["release_date"],
-            weight=battery["weight"],
-            weightUnit=battery["weight_unit"],
+            color=battery["color"], 
         )
         for battery in BATTERIES
     ]
@@ -35,6 +34,5 @@ def get_data_transformer() -> Transformer:
         cost=TRANSFORMER["cost"],
         costCurrency=TRANSFORMER["cost_currency"],
         releaseDate=TRANSFORMER["release_date"],
-        weight=TRANSFORMER["weight"],
-        weightUnit=TRANSFORMER["weight_unit"],
+        color=TRANSFORMER["color"], 
     )

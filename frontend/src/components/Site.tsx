@@ -1,29 +1,46 @@
 import React from 'react';
+import { Tooltip } from 'react-tooltip';
 import SiteDetail from './SiteDetail';
 import SiteLayout from './SiteLayout';
 import { useState, useEffect, FormEvent } from 'react';
-import { Battery, EnergySiteDetails, EnergySiteLayout, BatterySelection } from '../types/types';
+import {
+  Battery,
+  EnergySiteDetails,
+  EnergySiteLayout,
+  BatterySelection,
+  Transformer,
+} from '../types/types';
 
 const Site: React.FC = () => {
   const [batteries, setBatteries] = useState<Battery[]>([]);
   const [siteDetails, setSiteDetails] = useState<EnergySiteDetails | null>(null);
   const [siteLayout, setSiteLayout] = useState<EnergySiteLayout | null>(null);
+  const [transformer, setTransformer] = useState<Transformer | null>(null);
 
   useEffect(() => {
-    const fetchBatteries = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:9000/data/batteries');
-        if (!response.ok) {
+        // Fetch batteries
+        const batteriesResponse = await fetch('http://localhost:9000/data/batteries');
+        if (!batteriesResponse.ok) {
           throw new Error('Failed to fetch batteries');
         }
-        const data = await response.json();
-        setBatteries(data);
+        const batteriesData = await batteriesResponse.json();
+        setBatteries(batteriesData);
+
+        // Fetch transformer
+        const transformerResponse = await fetch('http://localhost:9000/data/transformer');
+        if (!transformerResponse.ok) {
+          throw new Error('Failed to fetch transformer');
+        }
+        const transformerData: Transformer = await transformerResponse.json();
+        setTransformer(transformerData);
       } catch (error) {
-        console.error('Error fetching batteries:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchBatteries();
+    fetchData();
   }, []);
 
   const handleBuildLayout = async (e: FormEvent) => {
@@ -72,14 +89,52 @@ const Site: React.FC = () => {
     }
   };
 
+  const getBatteryTooltipContent = (battery: Battery) => (
+    <div
+      className="text-sm"
+      style={{
+        backgroundColor: battery.color,
+        color: 'white',
+        padding: '8px',
+        borderRadius: '4px',
+      }}>
+      <h3 className="font-bold text-lg mb-2">{battery.name}</h3>
+      <p>
+        <span className="font-semibold">Dimensions:</span> {battery.dimensions.width}x
+        {battery.dimensions.length} {battery.dimensions.unit}
+      </p>
+      <p>
+        <span className="font-semibold">Energy:</span> {battery.energy} {battery.energyUnit}
+      </p>
+      <p>
+        <span className="font-semibold">Cost:</span> {battery.cost} {battery.costCurrency}
+      </p>
+      <p>
+        <span className="font-semibold">Release Date:</span> {battery.releaseDate}
+      </p>
+    </div>
+  );
+
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="w-1/3 p-4">
         <form onSubmit={handleBuildLayout} className="bg-white shadow-md rounded-lg p-6 text-left">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Select Batteries</h2>
           {batteries.map((battery) => (
-            <div key={battery.id} className="mb-4 grid grid-cols-2 gap-4">
-              <label className="text-base font-large text-gray-700">{battery.name}:</label>
+            <div key={battery.id} className="mb-4 grid grid-cols-2 gap-4 items-center">
+              <label
+                data-tooltip-id={`tooltip-battery-${battery.id}`}
+                className="text-lg font-semibold cursor-pointer hover:underline"
+                style={{ color: battery.color }}>
+                {battery.name}
+              </label>
+              <Tooltip
+                id={`tooltip-battery-${battery.id}`}
+                place="top"
+                className="max-w-xs"
+                style={{ backgroundColor: 'transparent', color: 'inherit' }}>
+                {getBatteryTooltipContent(battery)}
+              </Tooltip>
               <input
                 type="number"
                 min="0"
@@ -102,7 +157,13 @@ const Site: React.FC = () => {
       </div>
       <div className="w-2/3 p-4">
         {siteDetails && <SiteDetail siteDetails={siteDetails} />}
-        {siteLayout && <SiteLayout energySiteLayout={siteLayout} />}
+        {siteLayout && transformer && (
+          <SiteLayout
+            energySiteLayout={siteLayout}
+            batteries={batteries}
+            transformer={transformer}
+          />
+        )}
       </div>
     </div>
   );

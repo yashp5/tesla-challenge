@@ -17,9 +17,7 @@ class Battery(BaseModel):
     cost: int
     costCurrency: str
     releaseDate: str
-    weight: int
-    weightUnit: str
-
+    color: str
 
 class Transformer(BaseModel):
     id: int
@@ -30,9 +28,7 @@ class Transformer(BaseModel):
     cost: int
     costCurrency: str
     releaseDate: str
-    weight: int
-    weightUnit: str
-
+    color: str
 
 class SelectedBattery(BaseModel):
     batteryId: int

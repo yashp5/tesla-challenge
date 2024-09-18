@@ -13,6 +13,25 @@ export interface Battery {
   releaseDate: string;
   weight: number;
   weightUnit: string;
+  color: string;
+}
+
+export interface Transformer {
+  id: number;
+  name: string;
+  dimensions: {
+    length: number;
+    width: number;
+    unit: string;
+  };
+  energy: number;
+  energyUnit: string;
+  cost: number;
+  costCurrency: string;
+  releaseDate: string;
+  weight: number;
+  weightUnit: string;
+  color: string;
 }
 
 export interface BatterySelection {
