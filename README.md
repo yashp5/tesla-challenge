@@ -10,6 +10,7 @@ This project is a site layout webpage that allows users to mockup the build of m
     - [Backend](#backend)
     - [Frontend](#frontend)
 - [Running the Application](#running-the-application)
+- [API Documentation](#api-documentation)
 - [Testing](#testing)
 - [Future Improvements](#future-improvements)
 
@@ -59,6 +60,13 @@ Follow the Docker instructions in the [Getting Started](#docker) section.
    cd frontend
    npm run start
    ```
+
+## API Documentation
+
+The backend API is documented using Swagger. To access the Swagger UI:
+
+1. Start the backend server
+2. Open a web browser and navigate to `http://localhost:9000/docs`
 
 ## Testing
 
