@@ -82,7 +82,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ energySiteLayout, batteries, tr
     <div>
       <div className="bg-white shadow-md rounded-lg p-6 text-left">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Site Layout</h2>
-        <div className="flex flex-col p-4 rounded-lg">
+        <div className="flex w-fit flex-col p-4 rounded-lg bg-gray-100">
           {energySiteLayout.layout.map((row, rowIndex) => (
             <div key={rowIndex} className="flex mb-2">
               {row.map((item, itemIndex) => (
